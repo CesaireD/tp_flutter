@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: double.infinity,
                       fit: BoxFit.cover,
                     ),*/
-                    Image.asset(
+                    Image.network(
                       'assets/1.webp',
                       width: double.infinity,
                       height: double.infinity,
@@ -124,10 +124,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListView(
-                      scrollDirection: Axis.horizontal,
+                    ListTile(
+                      title: Image.network(
 
-                    ),
+                      ),
+                    )
                   ]
                 ),
               )
