@@ -60,7 +60,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       fit: BoxFit.cover,
                     ),*/
                     Image.network(
-                      'assets/1.webp',
+                      'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_891,q_50,w_1402/v1/clients/jamaica/Harmony_Hall_20180109_2015_b25b1d1a-c52a-4b9c-b88a-2e5aa5b1f5bd.jpg',
+                      //'https://github.com/CesaireD/tp_flutter/blob/main/Image/9.webp',
+                      //scale: 0.4,
+                      //'assets/1.webp',
                       width: double.infinity,
                       height: double.infinity,
                       fit: BoxFit.cover,
@@ -124,11 +127,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
+                   /* ListTile(
                       title: Image.network(
-
+                        'https://github.com/CesaireD/tp_flutter/blob/main/Image/1.jpg?raw=true',
+                        //'assets/1.webp',
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
                       ),
-                    )
+                    )*/
                   ]
                 ),
               )
