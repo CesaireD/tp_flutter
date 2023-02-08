@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'screens/Home.dart';
 import 'modele/produit.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: MyHomePage(),
+      home: HomePage(),
     );
   }
 }
@@ -26,10 +29,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Produit> prodlist = [
-    Produit(nom: 'Nom', path: 'https://www.elora.com/img/cms/Actu-Mode/680A5092.jpg'),
-    Produit(nom: 'Nom', path: 'https://www.elora.com/img/cms/Actu-Mode/680A5092.jpg'),
-  ];
+  List<Produit> prodlist = [];
   String nameof = "Name of ...";
   String ofReduct = "-50 %";
   @override
