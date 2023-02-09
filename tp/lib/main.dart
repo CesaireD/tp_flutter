@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tp/screens/AjouterProduit.dart';
 import 'screens/Home.dart';
 import 'modele/produit.dart';
 
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: HomePage(),
+      home: AjouterProduit()
+      //HomePage(),
     );
   }
 }

@@ -37,6 +37,8 @@ dependencies:
   cloud_firestore: ^4.3.1
   snapshot:
   firebase_core:
+  provider:
+  file_picker: ^4.0.0
 
 
 

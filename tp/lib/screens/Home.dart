@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tp/modele/produit.dart';
 
 import '../Search.dart';
 class HomePage extends StatefulWidget{
@@ -27,7 +29,38 @@ class HomePageState extends State<HomePage>{
         _dropdownValue = selectedValue;
       });
     }
+    switch (_dropdownValue) {
+      case "Art contemporain" : {
+
+      }
+      break;
+      case "Peinture abstraite" : {
+        final produit = Produit(id: "1", name: "nom", picture: "photo", description: "description", category: "categori", quantity: 2, price: 1, sale: true, date: DateTime.now());
+        produit.ajouterProduit();
+      }
+      break;
+      case "Portrait humain" : {
+
+      }
+      break;
+      case "Paysage" : {
+
+      }
+      break;
+      default: {
+
+      }
+      break;
+
+    }
   }
+
+  Widget buildProduit(Produit produit) => ListTile(
+    leading: CircleAvatar(child: Text('${produit.price}')),
+    title: Text(produit.name),
+    subtitle: Text(produit.date.toIso8601String()),
+  );
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -131,6 +164,53 @@ class HomePageState extends State<HomePage>{
                 ],
               ),
               const SizedBox(height: 30.0,),
+              StreamBuilder<List<Produit>>(
+                stream: Produit.fetch(),
+                  builder: (context, snapshot) {
+                   if(snapshot.hasError){
+                     return Text('');
+                   }else if(snapshot.hasData){
+                     final produits = snapshot.data!;
+                     return ListView(
+                       children: produits.map(buildProduit).toList(),
+                     );
+                   }else{
+                     return Center(child: CircularProgressIndicator());
+                   }
+                  }
+              ),
+              const SizedBox(height: 30.0,),
+              FutureBuilder<Produit?>(
+                future: Produit.fetchByID('produits'),
+                  builder: (context, snapshot) {
+                  if(snapshot.hasError){
+                    return Text('');
+                  }else if(snapshot.hasData) {
+                     final produit = snapshot.data;
+                     return produit == null ? Center(child: Text("Ce produit n'existe pas")) : buildProduit(produit);
+                   }else{
+                     return Center(child: CircularProgressIndicator(),);
+                   }
+                  }
+              ),
+              const SizedBox(height: 30.0,),
+              ElevatedButton(
+                  onPressed: () {
+                    final docProd = FirebaseFirestore.instance.collection('ifri').doc("2PaxuLA8LrREFQ9cQzAa");
+                    docProd.update({
+                      'price': 5
+                    });
+                  },
+                  child: Text('Update')
+              ),
+              const SizedBox(height: 30.0,),
+              ElevatedButton(
+                  onPressed: () {
+                    final docProd = FirebaseFirestore.instance.collection('ifri').doc("2PaxuLA8LrREFQ9cQzAa");
+                    docProd.delete();
+                  },
+                  child: Text('Delete')
+              ),
               /*SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
