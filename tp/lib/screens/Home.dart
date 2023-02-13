@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage>{
       break;
       case "Peinture abstraite" : {
         final produit = Produit(id: "1", name: "nom", picture: "photo", description: "description", category: "categori", quantity: 2, price: 1, sale: true, date: DateTime.now());
-        produit.ajouterProduit();
+        produit.add();
       }
       break;
       case "Portrait humain" : {

@@ -15,7 +15,7 @@ class Produit {
   Produit({this.id = '',required this.name,required this.picture,required this.description,required this.category,required this.quantity,required this.price,required this.sale,required this.date});
 
 
- ajouterProduit() async {
+ add() async {
    final docProduit = FirebaseFirestore.instance.collection('ifri').doc();
 
    final prod = Produit(
