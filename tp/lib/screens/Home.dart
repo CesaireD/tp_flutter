@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tp/modele/produit.dart';
+import '../helpers/style.dart';
 
 import '../Search.dart';
+import '../widgets/FeaturedProducts.dart';
+import '../widgets/featured_card.dart';
 class HomePage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +26,11 @@ class HomePageState extends State<HomePage>{
     'portrait',
     'paysage',
   ];
+  Widget buildProduit(Produit produit) => ListTile(
+    leading: CircleAvatar(child: Text('${produit.price}')),
+    title: Text(produit.name),
+    subtitle: Text(produit.date.toIso8601String()),
+  );
   void dropdownCallback(String? selectedValue) {
     if(selectedValue is String){
       setState(() {
@@ -55,11 +63,7 @@ class HomePageState extends State<HomePage>{
     }
   }
 
-  Widget buildProduit(Produit produit) => ListTile(
-    leading: CircleAvatar(child: Text('${produit.price}')),
-    title: Text(produit.name),
-    subtitle: Text(produit.date.toIso8601String()),
-  );
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,71 +75,41 @@ class HomePageState extends State<HomePage>{
       ),
       body: /*Center(child: Text("Hi..."),)*/
       Container(
-        padding: EdgeInsets.only(left: 10.0,right: 10.0),
-        margin: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+        margin: const EdgeInsets.all(10.0),
 
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30.0,),
-              Search(),
-              /*Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _recherche,
-                      decoration:  InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(45.7),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(45.7),
-                        ),
-                        //contentPadding: const EdgeInsets.only(left: 14.0,bottom: 8.0,top: 8.0),
-                        filled: true,
-                        fillColor: Colors.white,
-                        prefixIcon: IconButton(
-                          icon: const Icon(Icons.search,color: Colors.black,size: 35,),
-                          onPressed: () {
+              /*Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
 
-                          },
-                        ),
-                        hintText: "Recherche",
-                        hintStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22.0,
-                        ),
-                        //border: InputBorder.none
-                      ),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 22.0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20.0,),
-                  ElevatedButton(
-                      onPressed: () {
-                        
                       },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade900,
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
+                      child: Icon(Icons.search,),
                     ),
-                      child: const Icon(
-                        Icons.add_a_photo,
-                        color: Colors.white,
-                        size: 22,
-                      ),
                   )
-                ],
+              ),
+              Positioned(
+                  top: 20,
+                  right: 40,
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+
+                      },
+                      child: Icon(Icons.search,),
+                    ),
+                  )
               ),*/
+              Search(),
               const SizedBox(height: 30.0,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,112 +138,61 @@ class HomePageState extends State<HomePage>{
                 ],
               ),
               const SizedBox(height: 30.0,),
-              StreamBuilder<List<Produit>>(
-                stream: Produit.fetch(),
-                  builder: (context, snapshot) {
-                   if(snapshot.hasError){
-                     return Text('');
-                   }else if(snapshot.hasData){
-                     final produits = snapshot.data!;
-                     return ListView(
-                       children: produits.map(buildProduit).toList(),
-                     );
-                   }else{
-                     return Center(child: CircularProgressIndicator());
-                   }
-                  }
-              ),
-              const SizedBox(height: 30.0,),
-              FutureBuilder<Produit?>(
-                future: Produit.fetchByID('produits'),
-                  builder: (context, snapshot) {
-                  if(snapshot.hasError){
-                    return Text('');
-                  }else if(snapshot.hasData) {
-                     final produit = snapshot.data;
-                     return produit == null ? Center(child: Text("Ce produit n'existe pas")) : buildProduit(produit);
-                   }else{
-                     return Center(child: CircularProgressIndicator(),);
-                   }
-                  }
-              ),
-              const SizedBox(height: 30.0,),
-              ElevatedButton(
-                  onPressed: () {
-                    final docProd = FirebaseFirestore.instance.collection('ifri').doc("2PaxuLA8LrREFQ9cQzAa");
-                    docProd.update({
-                      'price': 5
-                    });
-                  },
-                  child: Text('Update')
-              ),
-              const SizedBox(height: 30.0,),
-              ElevatedButton(
-                  onPressed: () {
-                    final docProd = FirebaseFirestore.instance.collection('ifri').doc("2PaxuLA8LrREFQ9cQzAa");
-                    docProd.delete();
-                  },
-                  child: Text('Delete')
-              ),
-              /*SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /*ElevatedButton(
-                        onPressed: (){
-
-                        },
-                        style: ElevatedButton.styleFrom(
-
-                          side: BorderSide(color: Colors.white,width: 0),
-                          padding: const EdgeInsets.all(1),
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,//Colors.grey.shade50
-                          //backgroundColor: MaterialStateColor.resolveWith((color) => Colors.transparent),
-                        ),
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.white,
-                              radius: 40.0,
-                              child: Icon(
-                                Icons.account_balance,
-                                size: 40,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "Art contemporain",
-                              style: TextStyle(fontSize: 20.0, color: Colors.black),
-                            )
-
-                          ],
-                        )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(14.0),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text('Meilleure vente',style: textStyle,),
                     ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.account_balance, size: 40.0,color: Colors.black,),
-                          SizedBox(height: 5,),
-                          Text('Art\n contemporain',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontSize: 24),), // <-- Text
+                  ),
+                  TextButton(
+                      onPressed: () {
 
-
-                        ],
-                      ),
-                    ),*/
-                    //const SizedBox(width: 30.0,),
-
-                  ],
-                ),
+                      },
+                      child: const Text('Voir tout')
+                  ),
+                ],
+              ),
+              FeaturedProducts(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text('Decouverte',style: textStyle,),
+                    ),
+                  ),
+                ],
+              ),
+              /*Column(
+                children: [
+                  StreamBuilder<List<Produit>>(
+                      stream: Produit.fetch(),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasError){
+                          return const Text('');
+                        }else if(snapshot.hasData){
+                          final produits = snapshot.data!;
+                          return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (_, index)
+                          {
+                            return FeaturedCard(produit: produits[index]);
+                          });
+                        }else{
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                      }
+                  ),
+                ],
               )*/
+
+
 
             ],
           ),

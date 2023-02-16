@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 class Produit {
 
@@ -15,7 +16,7 @@ class Produit {
   Produit({this.id = '',required this.name,required this.picture,required this.description,required this.category,required this.quantity,required this.price,required this.sale,required this.date});
 
 
- add() async {
+  add() async {
    final docProduit = FirebaseFirestore.instance.collection('ifri').doc();
 
    final prod = Produit(
@@ -33,6 +34,16 @@ class Produit {
    await docProduit.set(json);
  }
 
+  static Future<Stream<List<Produit>>> search(String name) async {
+    String searchKey = name[0].toUpperCase() + name.substring(1);
+    return FirebaseFirestore.instance
+        .collection('ifri')
+        .orderBy("name")
+        .startAt([searchKey])
+        .endAt([searchKey + '\uf8ff'])
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => Produit.fromJson(doc.data())).toList());
+  }
  static Stream<List<Produit>> fetch() => FirebaseFirestore.instance
      .collection('ifri')
      .snapshots()
@@ -74,6 +85,7 @@ class Produit {
 
 
 }
+
 /*
 
 
